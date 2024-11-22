@@ -41,7 +41,7 @@ Our recently developed fully Bayesian semiparametric quantile mixed-effect model
     
 #### Example.3 (alternative: non-robust structural)
 
-   fit = Blend(y,x,t,J,kn,degree, robust=FALSE)
+    fit = Blend(y,x,t,J,kn,degree, robust=FALSE)
    
 #### Example.4 (alternative: non-robust non-structural)
 
