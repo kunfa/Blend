@@ -5,7 +5,7 @@ Version: 0.1.0
 Date: 2024-11-21
 Authors@R: c( person("Kun", "Fan", role = c("aut", "cre") , email = "kfan@ksu.edu"),
               person("Cen", "Wu", role = "aut"))
-Description: This package implements our recently developed fully Bayesian semiparametric quantile mixed-effect model for high-dimensional longitudinal studies with heterogeneous observations. This model can distinguish between  time-varying interactions and constant-effect-only cases to avoid model misspcifications. Facilitated by spike-and-slab priors, this model leads to superior performance in estimation, identification and statistical inference. In particular, robust Bayesian inferences in terms of valid Bayesian credible intervals on both parametric and nonparametric effects can be validated on finite samples. The Markov chain Monte Carlo algorithms of the proposed and alternative models are efficiently implemented in C++.
+Description: Our recently developed fully Bayesian semiparametric quantile mixed-effect model for high-dimensional longitudinal studies with heterogeneous observations can be implemented through this package. This model can distinguish between time-varying interactions and constant-effect-only cases to avoid model misspecifications. Facilitated by spike-and-slab priors, this model leads to superior performance in estimation, identification and statistical inference. In particular, robust Bayesian inferences in terms of valid Bayesian credible intervals on both parametric and nonparametric effects can be validated on finite samples. The Markov chain Monte Carlo algorithms of the proposed and alternative models are efficiently implemented in 'C++'.
 Depends: R (>= 4.2.0)
 License: GPL-2
 Encoding: UTF-8

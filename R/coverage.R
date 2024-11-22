@@ -4,6 +4,7 @@
 #'
 #' @param x Blend object.
 #' @usage Coverage(x)
+#' @return coverage
 #' @seealso \code{\link{Blend}}
 #'
 #' @examples

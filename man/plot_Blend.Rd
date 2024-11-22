@@ -13,6 +13,9 @@ plot_Blend(x, sparse, prob=0.95)
 
 \item{prob}{probability for credible interval, between 0 and 1. e.g. prob=0.95 leads to 95\% credible interval}
 }
+\value{
+plot
+}
 \description{
 plot the identified varying effects
 }

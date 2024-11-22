@@ -9,6 +9,9 @@ Coverage(x)
 \arguments{
 \item{x}{Blend object.}
 }
+\value{
+coverage
+}
 \description{
 calculate 95\% coverage for varying effects and constant effects under example data
 }

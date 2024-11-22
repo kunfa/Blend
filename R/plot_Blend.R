@@ -6,6 +6,7 @@
 #' @param sparse sparsity.
 #' @param prob probability for credible interval, between 0 and 1. e.g. prob=0.95 leads to 95\% credible interval
 #' @usage plot_Blend(x, sparse, prob=0.95)
+#' @return plot
 #' @seealso \code{\link{Blend}}
 #'
 #' @examples
