@@ -105,7 +105,7 @@ Blend <- function(y,x,t,J,kn,degree,iterations=10000, burn.in=NULL, robust=TRUE,
       xx1 = as.matrix(xx1)
       X2=xx1[,-(1:q)]
       X1=pi.u
-      out = LONBVSS(y,X1,X2,J,m,q,iterations,robust,quant,sparse)
+      out = LONBVSS(y,X1,X2,J,m,q,iterations,robust,quant=0.5,sparse)
       INT = apply(out$posterior$GS.alpha[-c(1:BI),,drop=FALSE], 2, stats::median)
       VV = apply(out$posterior$GS.eta[-c(1:BI),,drop=FALSE], 2, stats::median)
       coeff = cbind(INT, matrix(VV, nrow = q))

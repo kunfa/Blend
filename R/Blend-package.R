@@ -5,15 +5,14 @@ NULL
 "_PACKAGE"
 #' @keywords overview
 #' @name Blend-package
-#' @title Bayesian Longitudinal Regularized Semiparametric Quantile Mixed Model
+#' @title Robust Bayesian Longitudinal Regularized Semiparametric Mixed Model
 #' @aliases Blend-package
-#' @description In this package, we further extend the sparse Bayesian quantile mixed models to nonlinear longitudinal interactions. Specifically, the proposed Bayesian quantile semiparametric model is robust not only to outliers and heavy‐tailed distributions of the response variable, but also to the misspecification of interaction effect in the forms other than non-linear interactions. We have developed the Gibbs sampler with the spike‐and‐slab priors to promote sparse identification of appropriate forms of main and interaction effects.
+#' @description In this package, we further extend the sparse robust Bayesian mixed models to nonlinear longitudinal interactions. Specifically, the proposed Bayesian semiparametric model is robust not only to outliers and heavy‐tailed distributions of the response variable, but also to the misspecification of interaction effect in the forms other than non-linear interactions. We have developed the Gibbs sampler with the spike‐and‐slab priors to promote sparse identification of appropriate forms of main and interaction effects.
 #' In addition to the default method, users can also choose different selection structures for separation of constant and varying effects or not, methods without spike--and--slab priors and non-robust methods. In total, \emph{Blend} provides 8 different methods (4 robust and 4 non-robust) under the random intercept and slope model. All the methods in this package are developed for the first time. Please read the Details below for how to configure the method used.
 
 #' @details The user friendly, integrated interface \strong{Blend()} allows users to flexibly choose the fitting methods by specifying the following parameter:
 #' \tabular{rl}{
 #' robust: \tab whether to use robust methods for modelling.\cr\cr
-#' quant: \tab to specify different quantiles when using robust methods.\cr\cr
 #' structural: \tab whether to incorporate structural identification(separation of constant and varying effects) .\cr\cr
 #' sparse: \tab whether to use the spike-and-slab priors to impose sparsity.
 #' }
@@ -23,7 +22,7 @@ NULL
 #' selection() takes a Blend object and returns the variable selection results.
 #'
 #' @references
-#' Fan, K., Ren, J., Ma, Shuangge and Wu, C. (2024). Bayesian Regularized Semiparametric Quantile Mixed Models in Longitudinal Studies. (submitted)
+#' Fan, K., Ren, J., Ma, Shuangge and Wu, C. (2025+). Robust Bayesian Regularized Semiparametric Mixed Models in Longitudinal Studies. (submitted)
 #'
 #' Fan, K., Subedi, S., Yang, G., Lu, X., Ren, J., and Wu, C. (2024). Is Seeing Believing? A Practitioner’s Perspective on High-Dimensional Statistical Inference in Cancer Genomics Studies. Entropy, 26(9), 794.
 #'
