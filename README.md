@@ -55,4 +55,4 @@ and alternative models are efficiently implemented in 'C++'.
 
 This package provides implementation for methods proposed in
 
-  -Fan, K., Ren, J., Ma, Shuangge and Wu, C. (2024). Bayesian Regularized Semiparametric Quantile Mixed Models in Longitudinal Studies. (submitted).
+  -Fan, K., Ren, J., Ma, Shuangge and Wu, C. (2025). robust Bayesian Regularized Semiparametric Mixed Models in Longitudinal Studies. (submitted).
