@@ -2,7 +2,7 @@
 % Please edit documentation in R/Blend.R
 \name{Blend}
 \alias{Blend}
-\title{fit a Bayesian longitudinal regularized semi-parametric quantile mixed model}
+\title{fit a robust Bayesian longitudinal regularized semi-parametric mixed model}
 \usage{
 Blend(
   y,
@@ -14,7 +14,6 @@ Blend(
   iterations = 10000,
   burn.in = NULL,
   robust = TRUE,
-  quant = 0.5,
   sparse = "TRUE",
   structural = TRUE
 )
@@ -38,8 +37,6 @@ Blend(
 
 \item{robust}{logical flag. If TRUE, robust methods will be used.}
 
-\item{quant}{specify different quantiles when applying robust methods.}
-
 \item{sparse}{logical flag. If TRUE, spike-and-slab priors will be used to shrink coefficients of irrelevant covariates to zero exactly.}
 
 \item{structural}{logical flag. If TRUE, the coefficient functions with varying effects and constant effects will be penalized separately.}
@@ -52,7 +49,7 @@ an object of class `Blend' is returned, which is a list with component:
 \item{iterations}{the total number of iterations.}
 }
 \description{
-fit a Bayesian longitudinal regularized semi-parametric quantile mixed model
+fit a robust Bayesian longitudinal regularized semi-parametric mixed model
 }
 \details{
 Consider the data model described in "\code{\link{data}}":
@@ -69,7 +66,7 @@ When `robust=TRUE` (default), the distribution of \eqn{\epsilon_{ij}} is defined
 
 \eqn{
 f(\epsilon_{ij}|\theta,\tau) = \theta(1-\theta)\exp\left\{-\tau\rho_{\theta}(\epsilon_{ij})\right\}
-}, (\eqn{i=1,\dots,n,j=1,\dots,J_{i} }), which leads to a Bayesian formulation of quantile regression. If `robust=FALSE`, \eqn{\epsilon_{ij}} follows a normal distribution.
+}, (\eqn{i=1,\dots,n,j=1,\dots,J_{i} }), where \eqn{\theta = 0.5}. If `robust=FALSE`, \eqn{\epsilon_{ij}} follows a normal distribution.
 \cr
 
 Please check the references for more details about the prior distributions.

@@ -1,4 +1,4 @@
-#' fit a Bayesian longitudinal regularized semi-parametric quantile mixed model
+#' fit a robust Bayesian longitudinal regularized semi-parametric mixed model
 #'
 #' @keywords models
 #' @param x the matrix of repeated - measured predictors (genetic factors) with intercept. Each row should be an observation vector for each measurement.
@@ -10,7 +10,6 @@
 #' @param iterations the number of MCMC iterations.
 #' @param burn.in the number of iterations for burn-in.
 #' @param robust logical flag. If TRUE, robust methods will be used.
-#' @param quant specify different quantiles when applying robust methods.
 #' @param sparse logical flag. If TRUE, spike-and-slab priors will be used to shrink coefficients of irrelevant covariates to zero exactly.
 #' @param structural logical flag. If TRUE, the coefficient functions with varying effects and constant effects will be penalized separately.
 #' @return an object of class `Blend' is returned, which is a list with component:
@@ -33,7 +32,7 @@
 #'
 #' \eqn{
 #' f(\epsilon_{ij}|\theta,\tau) = \theta(1-\theta)\exp\left\{-\tau\rho_{\theta}(\epsilon_{ij})\right\}
-#' }, (\eqn{i=1,\dots,n,j=1,\dots,J_{i} }), which leads to a Bayesian formulation of quantile regression. If `robust=FALSE`, \eqn{\epsilon_{ij}} follows a normal distribution.
+#' }, (\eqn{i=1,\dots,n,j=1,\dots,J_{i} }), where \eqn{\theta = 0.5}. If `robust=FALSE`, \eqn{\epsilon_{ij}} follows a normal distribution.
 
 #' \cr
 #'
@@ -66,7 +65,7 @@
 #'
 #' @export
 
-Blend <- function(y,x,t,J,kn,degree,iterations=10000, burn.in=NULL, robust=TRUE, quant=0.5, sparse="TRUE", structural=TRUE)
+Blend <- function(y,x,t,J,kn,degree,iterations=10000, burn.in=NULL, robust=TRUE, sparse="TRUE", structural=TRUE)
 {
   x = as.matrix(x); kn = as.integer(kn); degree = as.integer(degree)
   m = ncol(x)-1
@@ -92,7 +91,7 @@ Blend <- function(y,x,t,J,kn,degree,iterations=10000, burn.in=NULL, robust=TRUE,
       X1 = matrix(Pi[,1], nrow=n)             # intercept
       X2 = Pi[c(1:n), -1]                     # constant part
       X3 = matrix(Pi[-c(1:n), -1], nrow=n)    # varying part
-      out = LONBVSS_SI(y,X1,X2,X3,J,q,iterations,robust,quant,sparse)
+      out = LONBVSS_SI(y,X1,X2,X3,J,q,iterations,robust,quant=0.5,sparse)
       INT = apply(out$posterior$GS.alpha[-c(1:BI),,drop=FALSE], 2, stats::median)
       CC = apply(out$posterior$GS.beta[-c(1:BI),,drop=FALSE], 2, stats::median)
       VV = apply(out$posterior$GS.eta[-c(1:BI),,drop=FALSE], 2, stats::median)
