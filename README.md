@@ -2,11 +2,15 @@
 
 # Blend
 
-> Bayesian Longitudinal Regularized Semiparametric Quantile Mixed Models
+> Robust Bayesian Longitudinal Regularized Semiparametric Mixed Models
 
 
-Our recently developed fully Bayesian semiparametric quantile mixed-effect model for high-dimensional longitudinal studies with heterogeneous observations can be implemented through this package. This model can distinguish between time-varying interactions and constant-effect-only cases to avoid model misspecifications. Facilitated by spike-and-slab priors, this model leads to superior performance in estimation, identification and statistical inference. In particular, robust Bayesian inferences in terms of valid Bayesian credible intervals on both parametric and nonparametric effects can be validated on finite samples. The Markov chain Monte Carlo algorithms of the proposed and alternative models are efficiently implemented in 'C++'.
-
+Our recently developed fully robust Bayesian semiparametric mixed-effect model for high-dimensional longitudinal studies with heterogeneous observations 
+can be implemented through this package. This model can distinguish between time-varying interactions and constant-effect-only 
+cases to avoid model misspecifications. Facilitated by spike-and-slab priors, this model leads to superior performance in estimation,
+identification and statistical inference. In particular, robust Bayesian inferences in terms of valid Bayesian credible intervals on 
+both parametric and nonparametric effects can be validated on finite samples. The Markov chain Monte Carlo algorithms of the proposed 
+and alternative models are efficiently implemented in 'C++'.
 ## How to install
 
   - To install from github, run these two lines of code in R
