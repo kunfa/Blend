@@ -11,6 +11,7 @@ cases to avoid model misspecifications. Facilitated by spike-and-slab priors, th
 identification and statistical inference. In particular, robust Bayesian inferences in terms of valid Bayesian credible intervals on 
 both parametric and nonparametric effects can be validated on finite samples. The Markov chain Monte Carlo algorithms of the proposed 
 and alternative models are efficiently implemented in 'C++'.
+
 ## How to install
 
   - To install from github, run these two lines of code in R
