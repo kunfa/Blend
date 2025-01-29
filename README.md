@@ -58,10 +58,20 @@ and alternative models are efficiently implemented in 'C++'.
    
 #### Example.4 (alternative: non-robust non-structural)
 
-    fit = Blend(y,x,t,J,kn,degree, robust=FALSE, structural=FALSE)   
+    fit = Blend(y,x,t,J,kn,degree, robust=FALSE, structural=FALSE) 
     
+## News
+
+### Blend 0.1.1.1 \[2025-01-29\]
+
+- Updated README file.
+
+### Blend 0.1.1 \[2025-01-21\]
+
+- Fixed minor bugs.
+
 ## Methods
 
 This package provides implementation for methods proposed in
 
-  -Fan, K., Ren, J., Ma, Shuangge and Wu, C. (2025). robust Bayesian Regularized Semiparametric Mixed Models in Longitudinal Studies. (submitted).
+  -Fan, K., Ren, J., Ma, Shuangge and Wu, C. (2025+). robust Bayesian Regularized Semiparametric Mixed Models in Longitudinal Studies. (submitted).
