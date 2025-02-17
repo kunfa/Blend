@@ -9,7 +9,7 @@
 [![Codecov test
 coverage](https://codecov.io/gh/kunfa/Blend/branch/master/graph/badge.svg)](https://app.codecov.io/gh/kunfa/Blend?branch=master)
 [![CRAN RStudio mirror
-downloads](https://cranlogs.r-pkg.org/badges/Blend)](https://www.r-pkg.org:443/pkg/Blend)
+downloads](https://cranlogs.r-pkg.org/badges/grand-total/Blend)](https://www.r-pkg.org:443/pkg/Blend)
 [![R-CMD-check](https://github.com/kunfa/Blend/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/kunfa/Blend/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
