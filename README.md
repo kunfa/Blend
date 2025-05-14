@@ -8,7 +8,8 @@
 [![CRAN](https://www.r-pkg.org/badges/version/Blend)](https://cran.r-project.org/package=Blend)
 [![CRAN RStudio mirror
 downloads](https://cranlogs.r-pkg.org/badges/grand-total/Blend)](https://www.r-pkg.org:443/pkg/Blend)
-
+[![CRAN RStudio mirror
+downloads](https://cranlogs.r-pkg.org/badges/last-month/Blend)](https://www.r-pkg.org:443/pkg/Blend)
 <!-- badges: end -->
 
 Our recently developed fully robust Bayesian semiparametric mixed-effect model for high-dimensional longitudinal studies with heterogeneous observations 
