@@ -24,14 +24,15 @@ NULL
 #' @references
 #' Fan, K., Ren, J., Ma, Shuangge and Wu, C. (2025+). Robust Bayesian Regularized Semiparametric Mixed Models in Longitudinal Studies. (submitted)
 #'
-#' Fan, K., Subedi, S., Yang, G., Lu, X., Ren, J., and Wu, C. (2024). Is Seeing Believing? A Practitioner’s Perspective on High-Dimensional Statistical Inference in Cancer Genomics Studies. Entropy, 26(9), 794.
+#' Fan, K., Subedi, S., Yang, G., Lu, X., Ren, J. and Wu, C. (2024). Is Seeing Believing? A Practitioner's Perspective on High-dimensional Statistical Inference in Cancer Genomics Studies. {\emph{Entropy}, 26(9).794} \doi{10.3390/e26090794}
 #'
 #' Ren, J., Zhou, F., Li, X., Ma, S., Jiang, Y. and Wu, C. (2023). Robust Bayesian variable selection for gene-environment interactions.
 #' {\emph{Biometrics}, 79(2), 684-694 } \doi{10.1111/biom.13670}
 #'
 #' Zhou, F., Ren, J., Ma, S. and Wu, C. (2023). The Bayesian regularized quantile varying coefficient model. Computational Statistics & Data Analysis, 187, 107808.
 #'
-#' Zhou, F., Lu, X., Ren, J., Fan, K., Ma, S., & Wu, C. (2022). Sparse group variable selection for gene–environment interactions in the longitudinal study. Genetic epidemiology, 46(5-6), 317-340.
+#' Zhou, F., Lu, X., Ren, J., Fan, K., Ma, S., and Wu, C. (2022). Sparse group variable selection for gene–environment interactions in the longitudinal study.
+#' {\emph{Genetic epidemiology}, 46(5-6), 317-340} \doi{10.1002/gepi.22461}
 #'
 #' Zhou, F., Ren, J.,  Li, G., Jiang, Y., Li, X., Wang, W. and Wu, C. (2019). Penalized Variable Selection for Lipid-Environment Interactions in a Longitudinal Lipidomics Study.
 #' {\emph{Genes}, 10(12), 1002} \doi{10.3390/genes10121002}
