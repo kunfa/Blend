@@ -25,7 +25,7 @@ Blend(
 
 \item{t}{the vector of scheduled time points.}
 
-\item{J}{the vector of number of repeated measurement for each subject.}
+\item{J}{the vector specifying the number of repeated measurements for each subject.}
 
 \item{kn}{the number of interior knots for B-spline.}
 

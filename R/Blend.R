@@ -4,7 +4,7 @@
 #' @param x the matrix of repeated - measured predictors (genetic factors) with intercept. Each row should be an observation vector for each measurement.
 #' @param y the vector of repeated - measured response variable. The current version of mixed only supports continuous response.
 #' @param t the vector of scheduled time points.
-#' @param J the vector of number of repeated measurement for each subject.
+#' @param J the vector specifying the number of repeated measurements for each subject.
 #' @param kn the number of interior knots for B-spline.
 #' @param degree the degree of B spline basis.
 #' @param iterations the number of MCMC iterations.
