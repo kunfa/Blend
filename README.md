@@ -38,7 +38,7 @@ and alternative models are efficiently implemented in 'C++'.
 
 ## Examples
 
-#### Example.1 (default method)
+#### Example.1 (default method: robust structural with sparsity)
 
     library(Blend)
     data(dat)
@@ -68,17 +68,17 @@ and alternative models are efficiently implemented in 'C++'.
     
     plot_Blend(fit,sparse=TRUE)
     
-#### Example.2 (alternative: robust non-structural)
+#### Example.2 (alternative: robust non-structural with sparsity)
 
     fit = Blend(y,x,t,J,kn,degree,structural=FALSE) 
     
-#### Example.3 (alternative: non-robust structural)
+#### Example.3 (alternative: non-robust structural with sparsity)
 
     fit = Blend(y,x,t,J,kn,degree, robust=FALSE)
    
-#### Example.4 (alternative: non-robust non-structural)
+#### Example.4 (alternative: non-robust non-structural without sparsity)
 
-    fit = Blend(y,x,t,J,kn,degree, robust=FALSE, structural=FALSE) 
+    fit = Blend(y,x,t,J,kn,degree, robust=FALSE, structural=FALSE, sparse = FALSE) 
     
     
 ## Methods

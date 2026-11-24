@@ -19,11 +19,11 @@ Blend(
 )
 }
 \arguments{
-\item{y}{the vector of repeated - measured response variable. The current version of mixed only supports continuous response.}
+\item{y}{the vector of repeated measurements of the response variable. The current version supports only continuous responses.}
 
-\item{x}{the matrix of repeated - measured predictors (genetic factors) with intercept. Each row should be an observation vector for each measurement.}
+\item{x}{the matrix of predictors for repeated measurements, including an intercept in the first column.}
 
-\item{t}{the vector of scheduled time points.}
+\item{t}{the vector of observation time points corresponding to the repeated measurements of all subjects.}
 
 \item{J}{the vector specifying the number of repeated measurements for each subject.}
 
@@ -44,30 +44,66 @@ Blend(
 \value{
 an object of class `Blend' is returned, which is a list with component:
 \item{posterior}{the posteriors of coefficients.}
-\item{coefficient}{the estimated coefficients.}
+\item{coefficient}{the posterior estimates of the model coefficients.}
 \item{burn.in}{the total number of burn-ins.}
 \item{iterations}{the total number of iterations.}
+\item{structural}{a logical value indicating whether the structural model is used.}
+\item{basis}{a list containing the number of B-spline basis
+functions (\code{q}), the number of interior knots (\code{kn}),
+the degree of B-splines (\code{degree}), the original observation
+times (\code{t}), the number of covariates excluding the intercept
+(\code{m}), and the transformed observation times (\code{u}).}
 }
 \description{
 fit a robust Bayesian longitudinal regularized semi-parametric mixed model
 }
 \details{
-Consider the data model described in "\code{\link{data}}":
-\deqn{Y_{ij} = \alpha_0(t_{ij})+\sum_{k=1}^{m}\beta_{k}(t_{ij})X_{ijk}+\boldsymbol{Z^\top_{ij}}\boldsymbol{\zeta_{i}}+\epsilon_{ij}.}
-The basis expansion and changing of basis with B splines will be done automatically:
-\deqn{\beta_{k}(\cdot)\approx \gamma_{k1} + \sum_{u=2}^{q}{B}_{ku}(\cdot)\gamma_{ku}}
-where \eqn{B_{ku}(\cdot)} represents B spline basis. \eqn{\gamma_{k1}} and \eqn{(\gamma_{k2}, \ldots, \gamma_{kq})^\top} correspond to the constant and varying parts of the coefficient functional, respectively.
-q=kn+degree+1 is the number of basis functions. By default, kn=degree=2. User can change the values of kn and degree to any other positive integers.
-When `structural=TRUE`(default), the coefficient functions with varying effects and constant effects will be penalized separately. Otherwise, the coefficient functions with varying effects and constant effects will be penalized together.
+Consider the data model described in \code{\link{data}}:
 
-When `sparse="TRUE"` (default), spike-and-slab priors are imposed on individual and/or group levels to identify important constant and varying effects. Otherwise, Laplacian shrinkage will be used.
+\deqn{Y_{ij} = \alpha_0(t_{ij}) +
+\sum_{k=1}^{m}\beta_k(t_{ij})X_{ijk} +
+Z_{ij}^\top\zeta_i + \epsilon_{ij}.}
 
-When `robust=TRUE` (default), the distribution of \eqn{\epsilon_{ij}} is defined as a Laplace distribution with density.
+The coefficient functions are approximated using B-spline
+basis expansions. When \code{structural=TRUE} (default),
+an equivalent change of basis is performed automatically:
 
-\eqn{
-f(\epsilon_{ij}|\theta,\tau) = \theta(1-\theta)\exp\left\{-\tau\rho_{\theta}(\epsilon_{ij})\right\}
-}, (\eqn{i=1,\dots,n,j=1,\dots,J_{i} }), where \eqn{\theta = 0.5}. If `robust=FALSE`, \eqn{\epsilon_{ij}} follows a normal distribution.
-\cr
+\deqn{\beta_k(\cdot) \approx \gamma_{k1} +
+\sum_{u=2}^{q} B_{ku}(\cdot)\gamma_{ku},}
+
+where \eqn{B_{ku}(\cdot)} denotes the B-spline basis function,
+and \eqn{\gamma_{k1}} and
+\eqn{(\gamma_{k2}, \ldots, \gamma_{kq})^\top}
+represent the constant and varying components of the
+coefficient function, respectively.
+The number of basis functions is \eqn{q=kn+degree+1}.
+By default, \code{kn=2} and \code{degree=2}.
+
+When \code{structural=TRUE} (default), constant and
+time-varying effects are regularized separately.
+Otherwise, each coefficient function is regularized
+as a whole without separating constant and
+time-varying effects.
+
+When \code{sparse=TRUE} (default), spike-and-slab priors
+are imposed at the individual and/or group levels for
+variable selection. Otherwise, Laplacian shrinkage priors
+are used without inducing exact sparsity.
+
+When \code{robust=TRUE} (default), the error terms
+\eqn{\epsilon_{ij}} are modeled using a Laplace distribution
+with density
+
+\deqn{f(\epsilon_{ij}\mid\tau) =
+\frac{\tau}{4}\exp\left\{-\frac{\tau}{2}
+|\epsilon_{ij}|\right\},}
+
+where \eqn{\tau>0} and \eqn{2/\tau} is the scale parameter.
+
+When \code{robust=FALSE}, the error terms are modeled
+using a Gaussian distribution.
+
+Posterior inference is conducted through Gibbs sampling.
 
 Please check the references for more details about the prior distributions.
 }

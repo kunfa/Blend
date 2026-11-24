@@ -3,6 +3,8 @@
 ### Blend 0.1.4 \[2026-11-24\]
 
 - Fixed bugs and improved the calculation of credible interval coverage for both constant and varying effects.
+- Updated documentation to improve clarity.
+- Updated references.
 
 ### Blend 0.1.3 \[2026-09-28\]
 
