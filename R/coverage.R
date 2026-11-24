@@ -1,141 +1,297 @@
-#' 95\% coverage for a Blend object with structural identification
+#' Coverage indicators for a Blend object
 #'
-#' calculate 95\% coverage for varying effects and constant effects under example data
+#' Calculate coverage indicators for varying and constant effects based on posterior credible intervals.
 #'
-#' @param x Blend object.
-#' @usage Coverage(x)
-#' @return coverage
+#' @param x A fitted Blend object.
+#' @param truth A list of true coefficient functions and constant coefficients, including the intercept.
+#' @param level The credible interval level. The default is 0.95.
+#' @param n.grid The number of equally spaced grid points used to evaluate coefficient function coverage. The default is 200.
+#'
+#' @return A named list of binary coverage indicators, with one element for each coefficient, including the intercept.
+#'
 #' @seealso \code{\link{Blend}}
 #'
 #' @examples
+#'
 #' data(dat)
-#' fit = Blend(y,x,t,J,kn,degree)
-#' Coverage(fit)
+#' fit = Blend(y, x, t, J, kn, degree)
+#'
+#' u = as.numeric(fit$basis$u)
+#'
+#' truth = list(
+#'   gamma0 = function(u) 2+2*sin(2*pi*u),
+#'   gamma1 = function(u) 2.5*exp(2.5*u-1),
+#'   gamma2 = function(u) 3*u^2-2*u+2,
+#'   gamma3 = function(u) -4*u^3+3,
+#'   gamma4 = function(u) 3-2*u,
+#'   gamma5 = 0.8,
+#'   gamma6 = -1.2,
+#'   gamma7 = 0.7,
+#'   gamma8 = -1.1,
+#'   gamma9 = 0,
+#'   gamma10 = 0,
+#'   gamma11 = 0,
+#'   gamma12 = 0,
+#'   gamma13 = 0,
+#'   gamma14 = 0,
+#'   gamma15 = 0
+#' )
+#'
+#' out = Coverage(fit, truth)
+#' print(out)
+#'
 #'
 #' @export
-Coverage = function(x){
+
+Coverage = function(x, truth, level=0.95, n.grid=200){
+
+  ## Model settings
+
   q = x$basis$q
-  kn = x$basis$kn
-  degree = x$basis$degree
-  t = x$basis$t
-  BI = x$burn.in
   m = x$basis$m
-  u = x$basis$u
-  n = length(u)
-  u.plot = seq(min(u), max(u), length.out = n)
-  gamma0 = 2+2*sin(u.plot*2*pi)
-  gamma2 = 3*u.plot^2-2*u.plot+2
-  gamma1 = 2.5*exp(2.5*u.plot-1)
-  gamma3= -4*u.plot^3+3
-  gamma4 = 3-2*u.plot
-  gamma5 = 0.8
-  gamma6 = -1.2
-  gamma7 = 0.7
-  gamma8 = -1.1
-  u.star = seq(0, 1, length=kn+2)[-c(1,kn+2)]
-  Knots.star = as.numeric(stats::quantile(u.plot, u.star))
-  pi.star = splines::bs(u.plot, knots=Knots.star, intercept=TRUE, degree=degree)[,1:(q)]
-  pi.star = cbind(1,pi.star[,-1])
-  c1.C=rep(0,q)
-  for (i in 1:q) {
-    c1.C[i]=stats::quantile(x$posterior$GS.alpha[5001:10000,i],0.5)
+  structural = x$structural
+
+  ## Input checking
+
+  if(!is.list(truth) || length(truth) != m+1L){
+    stop("truth must be a list of length m+1, including the intercept.")
   }
 
-  c2.C=rep(0,dim(x$posterior$GS.beta)[2])
-  for (i in 1:dim(x$posterior$GS.beta)[2]) {
-    c2.C[i]=stats::quantile(x$posterior$GS.beta[5001:10000,i],0.5)
+  if(length(level) != 1L ||
+     !is.numeric(level) ||
+     !is.finite(level) ||
+     level <= 0 || level >= 1){
+    stop("level must be between 0 and 1.")
   }
 
-  c3.C=rep(0,dim(x$posterior$GS.eta)[2])
-  for (i in 1:dim(x$posterior$GS.eta)[2]) {
-    c3.C[i]=stats::quantile(x$posterior$GS.eta[5001:10000,i],0.5)
-  }
-  C = matrix(rbind(c2.C, matrix(c3.C, ncol = m)), ncol = m*q)
-  C = matrix(C,nrow=q)
-  coeffmatrix.C=as.matrix(cbind(c1.C,C))
-  c1.C=rep(0,q)
-  for (i in 1:q) {
-    c1.C[i]=stats::quantile(x$posterior$GS.alpha[5001:10000,i],0.025)
+  for(j in seq_along(truth)){
+
+    if(!is.function(truth[[j]]) &&
+       !(is.numeric(truth[[j]]) &&
+         length(truth[[j]]) == 1L &&
+         is.finite(truth[[j]]))){
+      stop("Each element of truth must be a function or a finite scalar.")
+    }
   }
 
-  c2.C=rep(0,dim(x$posterior$GS.beta)[2])
-  for (i in 1:dim(x$posterior$GS.beta)[2]) {
-    c2.C[i]=stats::quantile(x$posterior$GS.beta[5001:10000,i],0.025)
+  ## Identify varying and constant effects
+
+  is.varying = vapply(truth, is.function, logical(1))
+
+  needs.grid = any(is.varying) || !structural
+
+  ## Credible interval probabilities
+
+  probs = c((1-level)/2, 1-(1-level)/2)
+
+  ## Posterior samples after burn-in
+
+  keep = seq.int(x$burn.in+1L, x$iterations)
+
+  GS.alpha = x$posterior$GS.alpha[keep, , drop=FALSE]
+
+  if(structural){
+
+    GS.beta = x$posterior$GS.beta[keep, , drop=FALSE]
+
   }
 
-  c3.C=rep(0,dim(x$posterior$GS.eta)[2])
-  for (i in 1:dim(x$posterior$GS.eta)[2]) {
-    c3.C[i]=stats::quantile(x$posterior$GS.eta[5001:10000,i],0.025)
-  }
-  C = matrix(rbind(c2.C, matrix(c3.C, ncol = m)), ncol = m*q)
-  C = matrix(C,nrow=q)
-  coeffmatrix.C1=as.matrix(cbind(c1.C,C))
-  c1.C=rep(0,q)
-  for (i in 1:q) {
-    c1.C[i]=stats::quantile(x$posterior$GS.alpha[5001:10000,i],0.975)
+  if(needs.grid){
+
+    GS.eta = x$posterior$GS.eta[keep, , drop=FALSE]
+
   }
 
-  c2.C=rep(0,dim(x$posterior$GS.beta)[2])
-  for (i in 1:dim(x$posterior$GS.beta)[2]) {
-    c2.C[i]=stats::quantile(x$posterior$GS.beta[5001:10000,i],0.975)
+  ## Evaluation grid and B-spline basis
+
+  if(needs.grid){
+
+    if(length(n.grid) != 1L ||
+       !is.numeric(n.grid) ||
+       !is.finite(n.grid) ||
+       n.grid < 2L ||
+       n.grid != floor(n.grid)){
+      stop("n.grid must be an integer greater than one.")
+    }
+
+    u = as.numeric(x$basis$u)
+    kn = x$basis$kn
+    degree = x$basis$degree
+
+    ## Evaluation grid
+
+    u.plot = seq(min(u), max(u), length.out=n.grid)
+
+    ## Reconstruct the original B-spline basis
+
+    u.star = seq(0, 1, length.out=kn+2L)[-c(1L, kn+2L)]
+
+    Knots = as.numeric(stats::quantile(u, u.star))
+
+    pi.u = splines::bs(
+      u,
+      knots=Knots,
+      intercept=TRUE,
+      degree=degree
+    )
+
+    ## Evaluate the basis at the grid points
+
+    pi.star = stats::predict(pi.u, newx=u.plot)
+
+    ## Structural reparameterization
+
+    if(structural){
+
+      pi.star = cbind(1, pi.star[, -1, drop=FALSE])
+
+    }
   }
 
-  c3.C=rep(0,dim(x$posterior$GS.eta)[2])
-  for (i in 1:dim(x$posterior$GS.eta)[2]) {
-    c3.C[i]=stats::quantile(x$posterior$GS.eta[5001:10000,i],0.975)
+  ## Coefficient function coverage
+
+  varying.coverage = function(draws, true.values){
+
+    CI = apply(
+      draws, 2, stats::quantile,
+      probs=probs,
+      names=FALSE
+    )
+
+    covered = true.values >= CI[1L, ] &
+      true.values <= CI[2L, ]
+
+    as.integer(all(covered))
   }
-  C = matrix(rbind(c2.C, matrix(c3.C, ncol = m)), ncol = m*q)
-  C = matrix(C,nrow=q)
-  coeffmatrix.C2=as.matrix(cbind(c1.C,C))
-  ind = 1:5
-  gamma.var.RBGLSS =pi.star %*% coeffmatrix.C[,ind]
-  gamma.var.RBGLSS1 =pi.star %*% coeffmatrix.C1[,ind]
-  gamma.var.RBGLSS2 =pi.star %*% coeffmatrix.C2[,ind]
 
-  CI1 = rep(0,n)
-  for(i in 1:n){
-    CI1[i] = ifelse(gamma0[i]>=gamma.var.RBGLSS1[i,1]&gamma0[i]<=gamma.var.RBGLSS2[i,1],1,0)
+  ## Constant parameter coverage
+
+  constant.coverage = function(draws, true.value){
+
+    CI = stats::quantile(
+      draws,
+      probs=probs,
+      names=FALSE
+    )
+
+    as.integer(
+      true.value >= CI[1L] &
+        true.value <= CI[2L]
+    )
   }
 
-  C1 = sum(CI1)
-  C1 = ifelse(C1!=0,1,0)
-  CI2 = rep(0,n)
-  for(i in 1:n){
-    CI2[i] = ifelse(gamma1[i]>=gamma.var.RBGLSS1[i,2]&gamma1[i]<=gamma.var.RBGLSS2[i,2],1,0)
+  ## Extract posterior coefficient draws
+
+  coefficient.draws = function(j){
+
+    ## Intercept
+
+    if(j == 0L){
+
+      return(GS.alpha)
+
+    }
+
+    ## Structural model
+
+    if(structural){
+
+      index = seq.int(
+        (j-1L)*(q-1L)+1L,
+        j*(q-1L)
+      )
+
+      return(
+        cbind(
+          GS.beta[, j, drop=FALSE],
+          GS.eta[, index, drop=FALSE]
+        )
+      )
+
+    }else{
+
+      ## Non-structural model
+
+      index = seq.int(
+        (j-1L)*q+1L,
+        j*q
+      )
+
+      return(
+        GS.eta[, index, drop=FALSE]
+      )
+    }
   }
-  C2 = sum(CI2)
-  C2 = ifelse(C2!=0,1,0)
-  CI3 = rep(0,n)
-  for(i in 1:n){
-    CI3[i] = ifelse(gamma2[i]>=gamma.var.RBGLSS1[i,3]&gamma2[i]<=gamma.var.RBGLSS2[i,3],1,0)
+
+  ## Calculate coverage
+
+  coverage = vector("list", m+1L)
+
+  for(j in 0:m){
+
+    true.effect = truth[[j+1L]]
+
+    if(is.varying[j+1L] || !structural){
+
+      ## Coefficient function coverage
+
+      if(is.varying[j+1L]){
+
+        true.values = true.effect(u.plot)
+
+      }else{
+
+        true.values = rep(true.effect, n.grid)
+
+      }
+
+      if(!is.numeric(true.values) ||
+         length(true.values) != n.grid ||
+         any(!is.finite(true.values))){
+        stop(paste("Invalid true function values for coefficient", j))
+      }
+
+      coef.draws = coefficient.draws(j)
+
+      gamma.draws = coef.draws %*% t(pi.star)
+
+      coverage[[j+1L]] = varying.coverage(
+        gamma.draws,
+        true.values
+      )
+
+    }else{
+
+      ## Constant parameter coverage
+
+      if(j == 0L){
+
+        coverage[[j+1L]] = constant.coverage(
+          GS.alpha[, 1L],
+          true.effect
+        )
+
+      }else{
+
+        coverage[[j+1L]] = constant.coverage(
+          GS.beta[, j],
+          true.effect
+        )
+      }
+    }
   }
-  C3 = sum(CI3)
-  C3 = ifelse(C3!=0,1,0)
-  CI4 = rep(0,n)
-  for(i in 1:n){
-    CI4[i] = ifelse(gamma3[i]>=gamma.var.RBGLSS1[i,4]&gamma3[i]<=gamma.var.RBGLSS2[i,4],1,0)
+
+  ## Output
+
+  if(!is.null(names(truth))){
+
+    names(coverage) = names(truth)
+
+  }else{
+
+    names(coverage) = paste0("gamma", 0:m)
+
   }
-  C4 = sum(CI4)
-  C4 = ifelse(C4!=0,1,0)
 
-  #100%
-  CI5 = rep(0,n)
-  for(i in 1:n){
-    CI5[i] = ifelse(gamma4[i]>=gamma.var.RBGLSS1[i,5]&gamma4[i]<=gamma.var.RBGLSS2[i,5],1,0)
-  }
-  C5 = sum(CI5)
-  C5 = ifelse(C5!=0,1,0)
-
-  #100%
-
-  C6 = ifelse(gamma5>=coeffmatrix.C1[1,6]& gamma5<=coeffmatrix.C2[1,6],1,0)
-
-  C7 = ifelse(gamma6>=coeffmatrix.C1[1,7]&gamma6<=coeffmatrix.C2[1,7],1,0)
-
-  C8 = ifelse(gamma7>=coeffmatrix.C1[1,8]&gamma7<=coeffmatrix.C2[1,8],1,0)
-
-  C9 = ifelse(gamma8>=coeffmatrix.C1[1,9]&gamma8<=coeffmatrix.C2[1,9],1,0)
-
-  coverage = list(C1,C2,C3,C4,C5,C6,C7,C8,C9)
-  coverage
+  return(coverage)
 }

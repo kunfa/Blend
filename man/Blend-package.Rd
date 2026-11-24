@@ -20,9 +20,11 @@ S3 generic functions selection() and print() are implemented for Blend objects.
 selection() takes a Blend object and returns the variable selection results.
 }
 \references{
-Fan, K., Ren, J., Ma, Shuangge and Wu, C. (2026+). Robust Bayesian variable selection and inference under misspecified nonparametric mixed models in longitudinal studies. (Under Review)
+Fan, K., Ren, J., Ma, S. and Wu, C. (2026). Robust Bayesian Variable Selection and Inference Under Misspecified Nonparametric Mixed Models in Longitudinal Studies.{\emph{Statistics in Medicine}, 45(25-27), e70830} \doi{10.1002/sim.70830}
 
 Fan, K., Srijana, S., Dissanayake, V. and Wu, C. (2026). Robust Bayesian high-dimensional variable selection and inference with the horseshoe family of priors. {\emph{Computational Statistics & Data Analysis}, 219, 108358} \doi{10.1016/j.csda.2026.108358}
+
+Fan, K., Jiang, Y., Ma, S., Wang, W. and Wu, C. (2025). Robust Sparse Bayesian Regression for Longitudinal Gene-Environment Interactions. {\emph{Journal of the Royal Statistical Society Series C: Applied Statistics}, 74(5), 1372–1394} \doi{10.1093/jrsssc/qlaf027}
 
 Fan, K., Subedi, S., Yang, G., Lu, X., Ren, J. and Wu, C. (2024). Is Seeing Believing? A Practitioner's Perspective on High-dimensional Statistical Inference in Cancer Genomics Studies. {\emph{Entropy}, 26(9).794} \doi{10.3390/e26090794}
 

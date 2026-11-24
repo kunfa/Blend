@@ -2,23 +2,54 @@
 % Please edit documentation in R/coverage.R
 \name{Coverage}
 \alias{Coverage}
-\title{95\% coverage for a Blend object with structural identification}
+\title{Coverage indicators for a Blend object}
 \usage{
-Coverage(x)
+Coverage(x, truth, level = 0.95, n.grid = 200)
 }
 \arguments{
-\item{x}{Blend object.}
+\item{x}{A fitted Blend object.}
+
+\item{truth}{A list of true coefficient functions and constant coefficients, including the intercept.}
+
+\item{level}{The credible interval level. The default is 0.95.}
+
+\item{n.grid}{The number of equally spaced grid points used to evaluate coefficient function coverage. The default is 200.}
 }
 \value{
-coverage
+A named list of binary coverage indicators, with one element for each coefficient, including the intercept.
 }
 \description{
-calculate 95\% coverage for varying effects and constant effects under example data
+Calculate coverage indicators for varying and constant effects based on posterior credible intervals.
 }
 \examples{
+
 data(dat)
-fit = Blend(y,x,t,J,kn,degree)
-Coverage(fit)
+fit = Blend(y, x, t, J, kn, degree)
+
+u = as.numeric(fit$basis$u)
+
+truth = list(
+  gamma0 = function(u) 2+2*sin(2*pi*u),
+  gamma1 = function(u) 2.5*exp(2.5*u-1),
+  gamma2 = function(u) 3*u^2-2*u+2,
+  gamma3 = function(u) -4*u^3+3,
+  gamma4 = function(u) 3-2*u,
+  gamma5 = 0.8,
+  gamma6 = -1.2,
+  gamma7 = 0.7,
+  gamma8 = -1.1,
+  gamma9 = 0,
+  gamma10 = 0,
+  gamma11 = 0,
+  gamma12 = 0,
+  gamma13 = 0,
+  gamma14 = 0,
+  gamma15 = 0
+)
+
+out = Coverage(fit, truth)
+print(out)
+
 
 }
 \seealso{

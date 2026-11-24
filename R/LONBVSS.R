@@ -64,27 +64,94 @@ LONBVSS <- function(y,X1,X2,J,m,q,max.steps,robust,quant,sparse){
   nu1=1
   mu2=1
   nu2=1
-  max.steps=10000
   debugging=FALSE
 
   progress = ifelse(debugging, 10^(floor(log10(max.steps))-1), 0)
-  if(robust){
-    fit=switch (sparse,
-                "TRUE" = RBVSS(X2,y,X1,C,m,q,max.steps,hatAlpha,hatBeta,hatAta,hatTau,hatV,hatSg1,hatSg2,hatSg3,invSigAlpha0,hatPiBeta,hatPi1,hatPi2,hatEtaSq1,hatEtaSq2,hatEtaSq3,xi1,xi2,r1,r2,r3,a,b,sh1,sh0,progress),
-                "FALSE" = RBV(X2,y,X1,C,m,q,max.steps,hatAlpha,hatBeta1,hatAta,hatTau,hatV,hatSg1,hatSg2,hatSg3,invSigAlpha0,hatPi1,hatPi2,hatEtaSq1,hatEtaSq2,hatEtaSq3,xi1,xi2,r1,r2,r3,a,b,sh1,sh0,progress)
-    )
-  }else{
-    fit=switch (sparse,
-                "TRUE" = BVSS(y,X1,X2,C,m,q,max.steps,hatAlpha,hatBeta2,hatAta,hatInvTauSq1,hatInvTauSq2,hatInvTauSq3,invSigAlpha0,hatPiBeta,hatPi1,hatPi2,hatLambdaSqStar1,hatLambdaSq1,hatLambdaSq2,hatSigmaSq,aStar,bStar,a1,b1,a2,b2,alpha,gamma,mu0,nu0,mu1,nu1,mu2,nu2,progress),
-                "FALSE" = BV(X2,y,X1,C,m,q,max.steps,hatBeta2,hatAlpha,hatAta,hatInvTauSq1,hatInvTauSq2,hatInvTauSq3,invSigAlpha0,hatPi1,hatPi2,hatLambdaSqStar1,hatLambdaSq1,hatLambdaSq2,hatSigmaSq,aStar,bStar,a1,b1,a2,b2,alpha,gamma,mu1,nu1,mu2,nu2,progress)
-    )
+  if (robust) {
+
+    if (sparse) {
+
+      fit = RBVSS(
+        X2, y, X1, C, m, q, max.steps,
+        hatAlpha, hatBeta, hatAta,
+        hatTau, hatV,
+        hatSg1, hatSg2, hatSg3,
+        invSigAlpha0,
+        hatPiBeta, hatPi1, hatPi2,
+        hatEtaSq1, hatEtaSq2, hatEtaSq3,
+        xi1, xi2,
+        r1, r2, r3,
+        a, b, sh1, sh0, progress
+      )
+
+    } else {
+
+      fit = RBV(
+        X2, y, X1, C, m, q, max.steps,
+        hatAlpha, hatBeta1, hatAta,
+        hatTau, hatV,
+        hatSg1, hatSg2, hatSg3,
+        invSigAlpha0,
+        hatPi1, hatPi2,
+        hatEtaSq1, hatEtaSq2, hatEtaSq3,
+        xi1, xi2,
+        r1, r2, r3,
+        a, b, sh1, sh0, progress
+      )
+
+    }
+
+  } else {
+
+    if (sparse) {
+
+      fit = BVSS(
+        y, X1, X2, C, m, q, max.steps,
+        hatAlpha, hatBeta2, hatAta,
+        hatInvTauSq1, hatInvTauSq2, hatInvTauSq3,
+        invSigAlpha0,
+        hatPiBeta, hatPi1, hatPi2,
+        hatLambdaSqStar1, hatLambdaSq1, hatLambdaSq2,
+        hatSigmaSq,
+        aStar, bStar, a1, b1, a2, b2,
+        alpha, gamma,
+        mu0, nu0, mu1, nu1, mu2, nu2,
+        progress
+      )
+
+    } else {
+
+      fit = BV(
+        X2, y, X1, C, m, q, max.steps,
+        hatBeta2, hatAlpha, hatAta,
+        hatInvTauSq1, hatInvTauSq2, hatInvTauSq3,
+        invSigAlpha0,
+        hatPi1, hatPi2,
+        hatLambdaSqStar1, hatLambdaSq1, hatLambdaSq2,
+        hatSigmaSq,
+        aStar, bStar, a1, b1, a2, b2,
+        alpha, gamma,
+        mu1, nu1, mu2, nu2,
+        progress
+      )
+
+    }
   }
-  if(sparse){
+
+  if (sparse) {
     GS.phi = fit$GS.tRsRs
-  }else{
+  } else {
     GS.phi = NULL
   }
-  out = list( posterior = list(GS.alpha = fit$GS.alpha,GS.phi = GS.phi,GS.beta = NULL,GS.eta = fit$GS.beta))
-  out
 
+  out = list(
+    posterior = list(
+      GS.alpha = fit$GS.alpha,
+      GS.phi = GS.phi,
+      GS.beta = NULL,
+      GS.eta = fit$GS.beta
+    )
+  )
+
+  out
 }

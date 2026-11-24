@@ -1,43 +1,76 @@
-Selection_Sparse=function(obj, burn.in=obj$burn.in){
-  BI = ifelse(is.null(burn.in), 0, burn.in)
-  max_BI = obj$iterations - BI
-  GS.beta = obj$posterior$GS.beta
-  GS.eta = obj$posterior$GS.eta
-  GS.phi = obj$posterior$GS.phi
+Selection_Sparse = function(obj, burn.in=obj$burn.in){
+
+  ## Model settings
+
+  BI = if(is.null(burn.in)) 0 else burn.in
+
+  structural = obj$structural
   m = obj$basis$m
+
+  ## Posterior samples
+
+  GS.beta = obj$posterior$GS.beta
+  GS.phi = obj$posterior$GS.phi
+
+  ## Remove burn-in
+
   if(BI>0){
-    GS.beta = GS.beta[-c(1:BI),]
-    GS.eta = GS.eta[-(1:BI),]
-    GS.phi = GS.phi[-c(1:BI),]
+
+    if(structural){
+      GS.beta = GS.beta[-seq_len(BI), , drop=FALSE]
+    }
+
+    GS.phi = GS.phi[-seq_len(BI), , drop=FALSE]
   }
-  Selectbeta = if(is.null(GS.beta)){ 0 }else{ apply(GS.beta, 2, function(t) sum(t!=0))}
-  Selecteta = apply(GS.phi, 2, sum)
 
-  MPM.V = which(Selecteta > max_BI/2)
-  MPM.C = setdiff(which(Selectbeta > max_BI/2), MPM.V)
+  ## Posterior inclusion probabilities
 
-  numb = matrix(c(length(MPM.C), length(MPM.V)), ncol=1,
-                dimnames=list(c("Constant effect", "Varying effect"), "#"))
+  if(structural){
 
-  Var.names = 1:m
-  if(length(MPM.C)>0){
-    Main = MPM.C
-    names(Main) = Var.names[MPM.C]
+    Selectbeta = colMeans(GS.beta != 0)
+    Selecteta = colMeans(GS.phi)
+
   }else{
-    Main = NULL
+
+    Selectbeta = rep(0, m)
+    Selecteta = colMeans(GS.phi)
+
   }
 
-  if(length(MPM.V)>0){
-    Varying = MPM.V
-    names(Varying) = Var.names[MPM.V]
+  ## Median probability model
+
+  MPM.V = which(Selecteta > 0.5)
+  MPM.C = setdiff(which(Selectbeta > 0.5), MPM.V)
+
+  ## Summary
+
+  numb = matrix(
+    c(length(MPM.C), length(MPM.V)),
+    ncol=1,
+    dimnames=list(c("Constant effect", "Varying effect"), "#")
+  )
+
+  ## Selected variable indices
+
+  Main = if(length(MPM.C)>0){
+    stats::setNames(MPM.C, MPM.C)
   }else{
-    Varying = NULL
+    NULL
   }
 
+  Varying = if(length(MPM.V)>0){
+    stats::setNames(MPM.V, MPM.V)
+  }else{
+    NULL
+  }
+
+  ## Output
 
   sel = list(Constant=Main, Varying=Varying)
-  method = paste("Median Probability Model (MPM)", sep = "")
+
+  method = "Median Probability Model (MPM)"
 
   out = list(method=method, indices=sel, summary=numb)
+
   out
 }

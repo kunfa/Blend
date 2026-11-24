@@ -2,22 +2,24 @@
 % Please edit documentation in R/plot_Blend.R
 \name{plot_Blend}
 \alias{plot_Blend}
-\title{plot a Blend object}
+\title{Plot a Blend object}
 \usage{
-plot_Blend(x, sparse, prob=0.95)
+plot_Blend(x, sparse, prob=0.95, n.grid=200)
 }
 \arguments{
-\item{x}{Blend object.}
+\item{x}{A fitted Blend object.}
 
-\item{sparse}{sparsity.}
+\item{sparse}{Logical value indicating whether a sparse model is used.}
 
-\item{prob}{probability for credible interval, between 0 and 1. e.g. prob=0.95 leads to 95\% credible interval}
+\item{prob}{probability for credible interval, between 0 and 1. e.g. prob=0.95 leads to 95\% credible interval.}
+
+\item{n.grid}{The number of evaluation grid points. The default is 200.}
 }
 \value{
-plot
+Plots of the intercept function and selected coefficient functions.
 }
 \description{
-plot the identified varying effects
+Plot the intercept function and the identified varying effects with pointwise posterior credible intervals.
 }
 \examples{
 data(dat)

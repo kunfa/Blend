@@ -72,27 +72,93 @@ LONBVSS_SI <- function(y,X1,X2,X3,J,q,max.steps,robust,quant,sparse){
   nu1=1
   mu2=1
   nu2=1
-  max.steps=10000
   invSigAlpha1 = rep(10^-3,q1)
   debugging=FALSE
 
   progress = ifelse(debugging, 10^(floor(log10(max.steps))-1), 0)
-  if(robust){
-    fit=switch (sparse,
-                "TRUE" = RBVSS_SI(y,X1,X2,X3,C,max.steps,q,hatBeta,hatEta,hatAlpha,hatAta,hatTau,hatV,hatSg1,hatSg2,hatSg3,hatSg4,invSigAlpha0,hatPiBeta,hatPiEta,hatPi3,hatPi4,hatEtaSq1,hatEtaSq2,hatEtaSq3,hatEtaSq4,xi1,xi2,r1,r2,r3,r4,a,b,sh1,sh0,progress),
-                "FALSE" = RBV_SI(y,X1,X2,X3,C,max.steps,q,hatBeta1,hatEta1,hatAlpha,hatAta,hatTau,hatV,hatSg1,hatSg2,hatSg3,hatSg4,invSigAlpha0,hatPi3,hatPi4,hatEtaSq1,hatEtaSq2,hatEtaSq3,hatEtaSq4,xi1,xi2,r1,r2,r3,r4,a,b,sh1,sh0,progress)
-    )
-  }else{
-    fit=switch (sparse,
-                "TRUE" = BVSS_SI(y,X1,X2,X3,C,m,q,max.steps,hatAlpha,hatBeta,hatAta,hatEta2,invSigAlpha1,hatInvTauSq1,hatInvTauSq22,hatInvTauSq3,hatInvTauSq4,hatPiBeta,hatPiEta,hatPi3,hatPi4,hatLambdaSqStar1,hatLambdaSqStar2,hatLambdaSqStar3,hatLambdaSqStar4,hatSigmaSq,a0,b0,aStar,bStar,a1,b1,a2,b2,alpha,gamma,mu0,muStar,mu1,mu2,nu0,nuStar,nu1,nu2,progress) ,
-                "FALSE" = BV_SI(y,X1,X2,X3,C,m,q,max.steps,hatAlpha,hatBeta,hatEta2,hatAta,invSigAlpha1,hatInvTauSq1,hatInvTauSq22,hatInvTauSq3,hatInvTauSq4,hatPi3,hatPi4,hatLambdaSqStar1,hatLambdaSqStar2,hatLambdaSqStar3,hatLambdaSqStar4,hatSigmaSq,a0,b0,aStar,bStar,a1,b1,a2,b2,alpha,gamma,mu1,mu2,nu1,nu2,progress)
-    )
+  if (robust) {
+
+    if (sparse) {
+
+      fit = RBVSS_SI(
+        y, X1, X2, X3, C, max.steps, q,
+        hatBeta, hatEta, hatAlpha, hatAta,
+        hatTau, hatV,
+        hatSg1, hatSg2, hatSg3, hatSg4,
+        invSigAlpha0,
+        hatPiBeta, hatPiEta, hatPi3, hatPi4,
+        hatEtaSq1, hatEtaSq2, hatEtaSq3, hatEtaSq4,
+        xi1, xi2,
+        r1, r2, r3, r4,
+        a, b, sh1, sh0, progress
+      )
+
+    } else {
+
+      fit = RBV_SI(
+        y, X1, X2, X3, C, max.steps, q,
+        hatBeta1, hatEta1, hatAlpha, hatAta,
+        hatTau, hatV,
+        hatSg1, hatSg2, hatSg3, hatSg4,
+        invSigAlpha0,
+        hatPi3, hatPi4,
+        hatEtaSq1, hatEtaSq2, hatEtaSq3, hatEtaSq4,
+        xi1, xi2,
+        r1, r2, r3, r4,
+        a, b, sh1, sh0, progress
+      )
+
+    }
+
+  } else {
+
+    if (sparse) {
+
+      fit = BVSS_SI(
+        y, X1, X2, X3, C, m, q, max.steps,
+        hatAlpha, hatBeta, hatAta, hatEta2,
+        invSigAlpha1,
+        hatInvTauSq1, hatInvTauSq22,
+        hatInvTauSq3, hatInvTauSq4,
+        hatPiBeta, hatPiEta, hatPi3, hatPi4,
+        hatLambdaSqStar1, hatLambdaSqStar2,
+        hatLambdaSqStar3, hatLambdaSqStar4,
+        hatSigmaSq,
+        a0, b0, aStar, bStar,
+        a1, b1, a2, b2,
+        alpha, gamma,
+        mu0, muStar, mu1, mu2,
+        nu0, nuStar, nu1, nu2,
+        progress
+      )
+
+    } else {
+
+      fit = BV_SI(
+        y, X1, X2, X3, C, m, q, max.steps,
+        hatAlpha, hatBeta, hatEta2, hatAta,
+        invSigAlpha1,
+        hatInvTauSq1, hatInvTauSq22,
+        hatInvTauSq3, hatInvTauSq4,
+        hatPi3, hatPi4,
+        hatLambdaSqStar1, hatLambdaSqStar2,
+        hatLambdaSqStar3, hatLambdaSqStar4,
+        hatSigmaSq,
+        a0, b0, aStar, bStar,
+        a1, b1, a2, b2,
+        alpha, gamma,
+        mu1, mu2, nu1, nu2,
+        progress
+      )
+
+    }
   }
- if(sparse){
-   GS.phi = fit$GS.tRsRs
- }else{
-   GS.phi = NULL
- }
+
+  if (sparse) {
+    GS.phi = fit$GS.tRsRs
+  } else {
+    GS.phi = NULL
+  }
   out = list(posterior =list(GS.alpha = fit$GS.alpha,GS.phi = GS.phi,GS.beta = fit$GS.beta,GS.eta = fit$GS.eta))
   out
 

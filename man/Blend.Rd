@@ -14,7 +14,7 @@ Blend(
   iterations = 10000,
   burn.in = NULL,
   robust = TRUE,
-  sparse = "TRUE",
+  sparse = TRUE,
   structural = TRUE
 )
 }
@@ -33,7 +33,7 @@ Blend(
 
 \item{iterations}{the number of MCMC iterations.}
 
-\item{burn.in}{the number of iterations for burn-in.}
+\item{burn.in}{the number of iterations for burn-in. If NULL (default), the first half of the iterations are discarded as burn-in.}
 
 \item{robust}{logical flag. If TRUE, robust methods will be used.}
 

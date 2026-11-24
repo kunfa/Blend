@@ -8,7 +8,7 @@
 #' @param kn the number of interior knots for B-spline.
 #' @param degree the degree of B spline basis.
 #' @param iterations the number of MCMC iterations.
-#' @param burn.in the number of iterations for burn-in.
+#' @param burn.in the number of iterations for burn-in. If NULL (default), the first half of the iterations are discarded as burn-in.
 #' @param robust logical flag. If TRUE, robust methods will be used.
 #' @param sparse logical flag. If TRUE, spike-and-slab priors will be used to shrink coefficients of irrelevant covariates to zero exactly.
 #' @param structural logical flag. If TRUE, the coefficient functions with varying effects and constant effects will be penalized separately.
@@ -65,7 +65,7 @@
 #'
 #' @export
 
-Blend <- function(y,x,t,J,kn,degree,iterations=10000, burn.in=NULL, robust=TRUE, sparse="TRUE", structural=TRUE)
+Blend <- function(y,x,t,J,kn,degree,iterations=10000, burn.in=NULL, robust=TRUE, sparse=TRUE, structural=TRUE)
 {
   x = as.matrix(x); kn = as.integer(kn); degree = as.integer(degree)
   m = ncol(x)-1
@@ -114,7 +114,13 @@ Blend <- function(y,x,t,J,kn,degree,iterations=10000, burn.in=NULL, robust=TRUE,
   colnames(coeff) = c("intercept",c(1:m))
   rownames(coeff) = paste("basis", 0:(q-1), sep="")
   basis = list(q=q, kn=kn, degree=degree, t=t,m = m,u=u)
-  fit = list(posterior = out$posterior, coefficient=coeff, burn.in = BI, iterations=iterations)
+  fit = list(
+    posterior = out$posterior,
+    coefficient = coeff,
+    burn.in = BI,
+    iterations = iterations,
+    structural = structural
+  )
   fit$basis = basis
   fit
 }
