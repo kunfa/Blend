@@ -47,22 +47,21 @@ and alternative models are efficiently implemented in 'C++'.
     
     u = as.numeric(fit$basis$u)
     truth = list(gamma0 = function(u) 2+2*sin(2*pi*u),
-     gamma1 = function(u) 2.5*exp(2.5*u-1),
-     gamma2 = function(u) 3*u^2-2*u+2,
-     gamma3 = function(u) -4*u^3+3,
-     gamma4 = function(u) 3-2*u,
-     gamma5 = 0.8,
-     gamma6 = -1.2,
-     gamma7 = 0.7,
-     gamma8 = -1.1,
-     gamma9 = 0,
-     gamma10 = 0,
-     gamma11 = 0,
-     gamma12 = 0,
-     gamma13 = 0,
-     gamma14 = 0,
-     gamma15 = 0
-     )
+    gamma1 = function(u) 2.5*exp(2.5*u-1),
+    gamma2 = function(u) 3*u^2-2*u+2,
+    gamma3 = function(u) -4*u^3+3,
+    gamma4 = function(u) 3-2*u,
+    gamma5 = 0.8,
+    gamma6 = -1.2,
+    gamma7 = 0.7,
+    gamma8 = -1.1,
+    gamma9 = 0,
+    gamma10 = 0,
+    gamma11 = 0,
+    gamma12 = 0,
+    gamma13 = 0,
+    gamma14 = 0,
+    gamma15 = 0)
     out = Coverage(fit, truth)
     print(out)
     
